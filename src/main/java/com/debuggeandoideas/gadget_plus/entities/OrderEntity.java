@@ -1,21 +1,19 @@
 package com.debuggeandoideas.gadget_plus.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "orders")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class OrderEntity {
 
     @Id
@@ -31,5 +29,10 @@ public class OrderEntity {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_bill", nullable = false, unique = true)
     private BillEntity bill;
+
+    @OneToMany(mappedBy = "order",
+               fetch = FetchType.EAGER,
+               cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductEntity> products = new ArrayList<>();
 
 }
